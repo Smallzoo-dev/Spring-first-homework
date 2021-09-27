@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+
+    <link th:href="@{/css/bootstrap.min.css}"
+            href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center"><h2>Memo List</h2></div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    th:onclick="|location.href='@{/api/memos/newMemo}'|"
+                    onclick="location.href='addForm.html'" type="button">Create New Memo
+            </button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Memo Num</th>
+                <th>Title</th>
+                <th>Username</th>
+                <th>Created at</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="memo : ${memos}">
+
+                <td><a href="memo.html" th:href="@{/api/memos/{id}(id=${memo.id})}" th:text="${memo.id}">1</a></td>
+                <td><a href="memo.html" th:href="@{/api/memos/{id}(id=${memo.id})}" th:text="${memo.title}">Memo1</a></td>
+
+                <td th:text="${memo.username}">userA</td>
+                <td>2021.09.25</td>
+            </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div> <!-- /container -->
+
+</body>
+</html>

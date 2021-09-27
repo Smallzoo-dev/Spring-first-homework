@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <meta charset="utf-8">
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <style> .container {
+        max-width: 560px;
+    } </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+
+        <h2>Edit Memo</h2></div>
+
+    <form action="item.html" method="post">
+
+        <div>
+
+            <label for="memoId">Memo Num</label>
+
+            <input type="text" id="memoId" name="memoId" class="form-control" value="1" readonly>
+
+        </div>
+        <div>
+
+            <label for="title">title</label>
+
+            <input type="text" id="title" name="title" class="form-control" value="memoA">
+
+        </div>
+        <div>
+
+            <label for="username">Memo Holder</label>
+
+            <input type="text" id="username" name="username" class="form-control"
+
+                   value="userA">
+
+        </div>
+        <div>
+
+            <label for="createdDate">Created At</label>
+
+            <input type="text" id="createdDate" name="createdDate" class="form-control" value="10">
+
+        </div>
+        <div>
+
+            <label for="body">Body</label>
+
+            <input type="text" id="body" name="body" class="form-control" value="10">
+
+        </div>
+        <hr class="my-4">
+
+        <div class="row">
+
+            <div class="col">
+
+                <button class="w-100 btn btn-primary btn-lg" type="submit">Save</button>
+
+            </div>
+
+            <div class="col">
+
+                <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='item.html'" type="button">Cancel</button>
+
+            </div>
+        </div>
+
+    </form>
+
+</div> <!-- /container --> </body>
+</html>
