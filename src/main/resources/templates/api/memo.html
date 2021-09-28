@@ -81,7 +81,7 @@
         <div class="col">
             <!-- delete mapping 해야함           -->
             <button class="w-100 btn btn-primary btn-lg"
-                    th:onclick="|location.href = '@{/api/memos}'|"
+                    th:onclick="|location.href ='@{/api/memos/{id}/delete(id=${memo.id})}'|"
                     onclick="location.href='editForm.html'" type="button">Delete
             </button>
 
