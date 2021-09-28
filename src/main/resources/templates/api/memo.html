@@ -52,7 +52,7 @@
 
         <input type="text" id="createdDate" name="createdDate" class="form-control"
 
-               value="2021.09.26" readonly>
+               th:value="${createdAt}" value="2021.09.26" readonly>
 
     </div>
     <div>
@@ -79,7 +79,6 @@
         </div>
 
         <div class="col">
-            <!-- delete mapping 해야함           -->
             <button class="w-100 btn btn-primary btn-lg"
                     th:onclick="|location.href ='@{/api/memos/{memoid}/delete(memoid=${memo.id})}'|"
                     onclick="location.href='editForm.html'" type="button">Delete

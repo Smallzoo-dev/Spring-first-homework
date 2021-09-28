@@ -17,4 +17,13 @@ public abstract class TimeStamped {
 
     @LastModifiedDate
     private LocalDateTime modifiedAt;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
 }

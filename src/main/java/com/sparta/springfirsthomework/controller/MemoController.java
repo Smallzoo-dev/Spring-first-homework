@@ -37,7 +37,9 @@ public class MemoController {
     @GetMapping("/{id}")
     public String memoView(@PathVariable long id, Model model) {
         Optional<Memo> byId = memoRepository.findById(id);
-        model.addAttribute("memo", byId.get());
+        MemoRequestDto memoRequestDto = new MemoRequestDto(byId.get());
+        model.addAttribute("memo",memoRequestDto);
+        model.addAttribute("createdAt", byId.get().getCreatedAt());
 
 //        Memo findmemo = memoTestRepository.findById(id);
 //        model.addAttribute("memo", findmemo);
@@ -62,7 +64,8 @@ public class MemoController {
     @GetMapping("/{memoid}/edit")
     public String editForm(@PathVariable Long memoid, Model model) {
         Optional<Memo> byId = memoRepository.findById(memoid);
-        model.addAttribute("memo", byId.get());
+        MemoRequestDto memoRequestDto = new MemoRequestDto(byId.get());
+        model.addAttribute("memo", memoRequestDto);
 //        Memo foundMemo = memoTestRepository.findById(id);
 
         return "api/editForm";
@@ -74,7 +77,7 @@ public class MemoController {
         memoService.update(memoid, memoRequestDto);
 
 //        memoTestRepository.update(id, memo);
-        return "redirect:/api/memos/{id}";
+        return "redirect:/api/memos/{memoid}";
     }
 
     @GetMapping("/{memoid}/delete")
@@ -83,11 +86,6 @@ public class MemoController {
         return "redirect:/api/memos";
     }
 
-//    @PutMapping("/api/memos/{id}")
-//    public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto requestDto) {
-//        memoService.update(id, requestDto);
-//        return id;
-//    }
 
 
 }

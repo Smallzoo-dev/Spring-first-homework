@@ -30,7 +30,6 @@
                 <th>Memo Num</th>
                 <th>Title</th>
                 <th>Username</th>
-                <th>Created at</th>
             </tr>
             </thead>
             <tbody>
@@ -38,9 +37,7 @@
 
                 <td><a href="memo.html" th:href="@{/api/memos/{id}(id=${memo.id})}" th:text="${memo.id}">1</a></td>
                 <td><a href="memo.html" th:href="@{/api/memos/{id}(id=${memo.id})}" th:text="${memo.title}">Memo1</a></td>
-
                 <td th:text="${memo.username}">userA</td>
-                <td>2021.09.25</td>
             </tr>
 
             </tbody>
