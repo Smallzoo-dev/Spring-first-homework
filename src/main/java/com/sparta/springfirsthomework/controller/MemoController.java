@@ -21,11 +21,12 @@ public class MemoController {
     private final MemoRepository memoRepository;
 //    private final MemoTestRepository memoTestRepository;
     private final MemoService memoService;
-    LocalDateTime current = LocalDateTime.now();
-    LocalDateTime before = LocalDateTime.now().minusDays(1);
+
 
     @GetMapping
     public String getMemos(Model model) {
+        LocalDateTime current = LocalDateTime.now();
+        LocalDateTime before = LocalDateTime.now().minusDays(1);
         List<Memo> memos = memoRepository.findAllByModifiedAtBetweenOrderByModifiedAtDesc(before, current);
 
 //        List<Memo> memos = memoTestRepository.findAll();
@@ -58,27 +59,27 @@ public class MemoController {
         return "redirect:/api/memos/{id}";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable Long id, Model model) {
-        Optional<Memo> byId = memoRepository.findById(id);
+    @GetMapping("/{memoid}/edit")
+    public String editForm(@PathVariable Long memoid, Model model) {
+        Optional<Memo> byId = memoRepository.findById(memoid);
         model.addAttribute("memo", byId.get());
 //        Memo foundMemo = memoTestRepository.findById(id);
 
         return "api/editForm";
     }
 
-    @PostMapping("/{id}/edit")
-    public String edit(@PathVariable Long id, @ModelAttribute Memo memo) {
+    @PostMapping("/{memoid}/edit")
+    public String edit(@PathVariable Long memoid, @ModelAttribute Memo memo) {
         MemoRequestDto memoRequestDto = new MemoRequestDto(memo);
-        memoService.update(id, memoRequestDto);
+        memoService.update(memoid, memoRequestDto);
 
 //        memoTestRepository.update(id, memo);
         return "redirect:/api/memos/{id}";
     }
 
-    @DeleteMapping("/{id}/delete")
-    public String deleteMemo(@PathVariable Long id) {
-        memoRepository.deleteById(id);
+    @GetMapping("/{memoid}/delete")
+    public String deleteMemo(@PathVariable Long memoid) {
+        memoRepository.deleteById(memoid);
         return "redirect:/api/memos";
     }
 
