@@ -1,15 +1,13 @@
 package com.sparta.springfirsthomework.controller;
 
 import com.sparta.springfirsthomework.domain.model.Memo;
-import com.sparta.springfirsthomework.domain.model.Reply;
 import com.sparta.springfirsthomework.domain.model.UserNormal;
 import com.sparta.springfirsthomework.dto.ReplyDto;
-import com.sparta.springfirsthomework.repository.MemoRepository;
 import com.sparta.springfirsthomework.dto.MemoRequestDto;
-import com.sparta.springfirsthomework.repository.ReplyRepository;
-import com.sparta.springfirsthomework.repository.UserNormalRepository;
 import com.sparta.springfirsthomework.security.UserDetailsImpl;
 import com.sparta.springfirsthomework.service.MemoService;
+import com.sparta.springfirsthomework.service.ReplyService;
+import com.sparta.springfirsthomework.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,56 +16,57 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequestMapping("/api/memos")
 @RequiredArgsConstructor
 @Controller
 public class MemoController {
-    private final MemoRepository memoRepository;
     private final MemoService memoService;
-    private final ReplyRepository replyRepository;
-    private final UserNormalRepository userNormalRepository;
+    private final UserService userService;
+    private final ReplyService replyService;
 
 
     @GetMapping
     public String getMemos(Model model) {
         LocalDateTime current = LocalDateTime.now();
         LocalDateTime before = LocalDateTime.now().minusDays(1);
-        List<MemoRequestDto> memos = memoRepository
-                .findAllByModifiedAtBetweenOrderByModifiedAtDesc(before, current)
+        List<MemoRequestDto> memos = memoService.findAllMemoWeek(before, current)
                 .stream().map(MemoRequestDto::new)
                 .collect(Collectors.toList());
-
         model.addAttribute("memos", memos);
         return "api/memos";
     }
 
 
     @GetMapping("/{id}")
-    public String memoView(@PathVariable long id, Model model) {
-        Optional<Memo> byId = memoRepository.findById(id);
-        MemoRequestDto memoRequestDto = new MemoRequestDto(byId.get());
-        List<ReplyDto> replies = replyRepository.findAllByMemoLikeOrderByModifiedAtDesc(byId.get())
+    public String memoView(@PathVariable long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails != null) {
+            model.addAttribute("loginUser", userDetails.getUsername());
+        } else {
+            model.addAttribute("loginUser", "null");
+        }
+
+        Memo findOneMemo = memoService.findOne(id);
+        MemoRequestDto memoRequestDto = new MemoRequestDto(findOneMemo);
+        List<ReplyDto> replies = replyService.findAllReplyByMemo(findOneMemo)
                 .stream().map(ReplyDto::new)
                 .collect(Collectors.toList());
 
         model.addAttribute("memo",memoRequestDto);
         model.addAttribute("replies", replies);
-        model.addAttribute("createdAt", byId.get().getCreatedAt());
+        model.addAttribute("createdAt", findOneMemo.getCreatedAt());
 
-//        Memo findmemo = memoTestRepository.findById(id);
-//        model.addAttribute("memo", findmemo);
         return "api/memo";
-
     }
 
     @GetMapping("/newMemo")
-    public String newMemoForm() {
-        return "api/newMemoForm";
+    public String newMemoForm(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails == null) {
+            return "redirect:/user/login";
+        } else return "api/newMemoForm";
     }
 
     @PostMapping("/newMemo")
@@ -76,38 +75,40 @@ public class MemoController {
                           @AuthenticationPrincipal UserDetailsImpl userDetails,
                           RedirectAttributes redirectAttributes) {
 
-        Optional<UserNormal> userNormal = userNormalRepository.findByUsername(userDetails.getUsername());
-        Memo memo = new Memo(title, userNormal.get(), contents);
-        memoRepository.save(memo);
-
-        redirectAttributes.addAttribute("id", memo.getId());
+        UserNormal userNormal = userService.findByUsername(userDetails.getUsername());
+        Long savedMemoId = memoService.createMemo(title, userNormal, contents);
+        redirectAttributes.addAttribute("id", savedMemoId);
 
         return "redirect:/api/memos/{id}";
     }
 
     @GetMapping("/{memoid}/edit")
-    public String editForm(@PathVariable Long memoid, Model model) {
-        Optional<Memo> byId = memoRepository.findById(memoid);
-        MemoRequestDto memoRequestDto = new MemoRequestDto(byId.get());
-        model.addAttribute("memo", memoRequestDto);
-//        Memo foundMemo = memoTestRepository.findById(id);
-
-        return "api/editForm";
+    public String editForm(@PathVariable Long memoid,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails,
+                           Model model) {
+        Memo findOneMemo = memoService.findOne(memoid);
+        if (memoService.findOne(memoid).getUserNormal().getId() == userDetails.userNormal.getId()) {
+            MemoRequestDto memoRequestDto = new MemoRequestDto(findOneMemo);
+            model.addAttribute("memo", memoRequestDto);
+            return "api/editForm";
+        } else return "redirect:/api/memos/{memoid}"; // redirect attribute로 알람 띄우기
     }
 
     @PostMapping("/{memoid}/edit")
     public String edit(@PathVariable Long memoid, @ModelAttribute Memo memo) {
         MemoRequestDto memoRequestDto = new MemoRequestDto(memo);
         memoService.update(memoid, memoRequestDto);
-
-//        memoTestRepository.update(id, memo);
         return "redirect:/api/memos/{memoid}";
     }
 
     @GetMapping("/{memoid}/delete")
-    public String deleteMemo(@PathVariable Long memoid) {
-        memoRepository.deleteById(memoid);
-        return "redirect:/api/memos";
+    public String deleteMemo(@PathVariable Long memoid, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (memoService.findOne(memoid).getUserNormal().getId() == userDetails.userNormal.getId()){
+            memoService.deleteById(memoid);
+            return "redirect:/api/memos";
+        } else return "redirect:/api/memos/{memoid}";
+
+
     }
 
 

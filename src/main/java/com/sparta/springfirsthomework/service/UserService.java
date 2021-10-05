@@ -42,6 +42,11 @@ public class UserService {
         userNormalRepository.save(userNormal);
     }
 
+    public UserNormal findByUsername(String username) {
+        Optional<UserNormal> byUsername = userNormalRepository.findByUsername(username);
+        return byUsername.get();
+    }
+
     private boolean isRightPassword(String password) {
         final String pattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d~!@#$%^&*()+|=]{8,20}$\n";
         return Pattern.matches(pattern, password);

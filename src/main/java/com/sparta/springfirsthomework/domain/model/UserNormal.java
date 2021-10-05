@@ -19,6 +19,12 @@ public class UserNormal {
         this.username = username;
         this.email = email;
     }
+    public UserNormal(String username, String password, String email, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.kakaoId = null;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,10 +39,13 @@ public class UserNormal {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(unique = true)
+    private Long kakaoId;
+
     //    @JsonIgnore
-    @OneToMany(mappedBy = "userNormal")
+    @OneToMany(mappedBy = "userNormal", cascade = CascadeType.ALL)
     private List<Memo> memos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userNormal")
+    @OneToMany(mappedBy = "userNormal", cascade = CascadeType.ALL)
     private List<Reply> replies = new ArrayList<>();
 }

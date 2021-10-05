@@ -10,4 +10,8 @@ import java.util.Optional;
 public interface UserNormalRepository extends JpaRepository<UserNormal, Long> {
 
     Optional<UserNormal> findByUsername(String username);
+
+    Optional<UserNormal> findByEmail(String kakaoEmail);
+
+    Optional<UserNormal> findByKakaoId(Long kakaoId);
 }

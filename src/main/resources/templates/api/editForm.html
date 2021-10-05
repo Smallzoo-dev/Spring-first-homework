@@ -9,7 +9,7 @@
             href="../css/bootstrap.min.css" rel="stylesheet">
 
     <style> .container {
-        max-width: 560px;
+        max-width: 900px;
     } </style>
 </head>
 <body>
@@ -44,9 +44,9 @@
 
             <label for="username">Memo Holder</label>
 
-            <input type="text" id="username" name="username" class="form-control"
+            <input type="text" id="username" name="username" class="form-control read"
                    th:value ="${memo.username}"
-                   value="userA">
+                   value="userA" readonly>
 
         </div>
 

@@ -28,4 +28,14 @@ public class Reply extends TimeStamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memo_id")
     private Memo memo;
+
+    public Reply(String contents, UserNormal userNormal, Memo memo) {
+        this.contents = contents;
+        this.userNormal = userNormal;
+        this.memo = memo;
+    }
+
+    public void update(String contents) {
+        this.contents = contents;
+    }
 }

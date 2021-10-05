@@ -32,13 +32,6 @@ public class Memo extends TimeStamped {
     @OneToMany(mappedBy = "memo", fetch = FetchType.LAZY)
     private List<Reply> replies;
 
-//    public Memo newMemo(String title, String contents, String username) {
-//        Memo memo = new Memo();
-//        memo.setTitle();
-//
-//        return memo;
-//    }
-//
 
     public Memo(String title, UserNormal userNormal, String contents) {
 
@@ -48,6 +41,8 @@ public class Memo extends TimeStamped {
     }
 
     public void update(MemoRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
     }
 }
 

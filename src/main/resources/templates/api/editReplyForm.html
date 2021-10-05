@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+
+    <link
+            th:href="@{/css/bootstrap.min.css}"
+            href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <style> .container {
+        max-width: 560px;
+    } </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+
+        <h2>Edit Reply</h2></div>
+
+    <form th:action = "@{/reply/{memoid}/{replyid}/edit(memoid=${memoid}, replyid = ${reply.id})}" method="post">
+        <div>
+
+            <label for="contents">Reply</label>
+
+            <input type="text" id="contents" name="contents" class="form-control"
+                   th:value ="${reply.contents}"
+                   value="10">
+
+        </div>
+        <hr class="my-4">
+
+        <div class="row">
+
+            <div class="col">
+
+                <button class="w-100 btn btn-primary btn-lg" type="submit">Revise</button>
+
+            </div>
+
+            <div class="col">
+
+                <button class="w-100 btn btn-secondary btn-lg"
+                        th:onclick="|location.href='@{/api/memos/{id}(id=${memoid})}'|"
+                        onclick="location.href='item.html'" type="button">Cancel</button>
+
+            </div>
+        </div>
+
+    </form>
+
+</div> <!-- /container --> </body>
+</html>

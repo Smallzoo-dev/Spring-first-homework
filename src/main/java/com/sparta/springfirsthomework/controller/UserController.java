@@ -2,6 +2,7 @@ package com.sparta.springfirsthomework.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.springfirsthomework.dto.SignupRequestDto;
+import com.sparta.springfirsthomework.service.KakaoUserService;
 import com.sparta.springfirsthomework.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserController {
     private final UserService userService;
+    private final KakaoUserService kakaoUserService;
     // 회원 로그인 페이지
     @GetMapping("/login")
     public String login() {
@@ -34,9 +36,9 @@ public class UserController {
         return "redirect:/user/login";
     }
 
-//    @GetMapping("/user/kakao/callback")
-//    public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-//        kakaoUserService.kakaoLogin(code);
-//        return "redirect:/";
-//    }
+    @GetMapping("/kakao/callback")
+    public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        kakaoUserService.kakaoLogin(code);
+        return "redirect:/";
+    }
 }
