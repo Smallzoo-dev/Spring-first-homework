@@ -1,4 +1,4 @@
-package com.sparta.springfirsthomework.domain;
+package com.sparta.springfirsthomework.utils;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

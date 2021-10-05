@@ -1,9 +1,8 @@
-package com.sparta.springfirsthomework.domain;
+package com.sparta.springfirsthomework.dto;
 
+import com.sparta.springfirsthomework.domain.model.Memo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.format.DateTimeFormatter;
 
 @NoArgsConstructor
 @Getter
@@ -15,7 +14,7 @@ public class MemoRequestDto {
 
     public MemoRequestDto(Memo memo) {
         this.id = memo.getId();
-        this.username = memo.getUsername();
+        this.username = memo.getUserNormal().getUsername();
         this.title = memo.getTitle();
         this.contents = memo.getContents();
 

@@ -1,5 +1,6 @@
-package com.sparta.springfirsthomework.domain;
+package com.sparta.springfirsthomework.repository;
 
+import com.sparta.springfirsthomework.domain.model.Memo;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

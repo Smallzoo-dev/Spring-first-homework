@@ -11,6 +11,7 @@
         }
 
     </style>
+</head>
 <body>
 
 <div class="container">
@@ -96,6 +97,39 @@
         </div>
     </div>
 
-</div> <!-- /container --> </body>
+    <hr class="my-4">
+
+    <div class="py-5 text-center">
+
+        <h2>reply</h2></div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>date</th>
+            <th>Username</th>
+            <th>Content</th>
+            <th>revise</th>
+            <th>delete</th>
+        </tr>
+        </thead>
+        <tbody>
+<!--        <tr th:each="memo : ${memos}">-->
+        <tr th:each="reply : ${replies}">
+            <td>date</td>
+            <td th:text="${reply.userNormal}">userA</td>
+            <td th:text="${reply.contents}"><a>memo reply contents</a></td>
+<!--            <td th:text="${memo.username}">userA</td>-->
+
+            <td><button class="w-75 btn btn-primary btn-xs">수정</button></td>
+            <td><button class="w-75 btn btn-primary btn-xs">삭제</button></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+
+</div> <!-- /container -->
+</body>
 </html>
-</head>

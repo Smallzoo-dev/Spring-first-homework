@@ -1,8 +1,8 @@
 package com.sparta.springfirsthomework.service;
 
-import com.sparta.springfirsthomework.domain.Memo;
-import com.sparta.springfirsthomework.domain.MemoRepository;
-import com.sparta.springfirsthomework.domain.MemoRequestDto;
+import com.sparta.springfirsthomework.domain.model.Memo;
+import com.sparta.springfirsthomework.repository.MemoRepository;
+import com.sparta.springfirsthomework.dto.MemoRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
