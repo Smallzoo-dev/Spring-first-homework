@@ -14,3 +14,6 @@
 ## 09-28 'endup'commit 진행사항
 1. 로컬에서 완료됨 배포만 남음
 
+## 09-28 배포 끝
+
+URL : http://smallzoo.site
