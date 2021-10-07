@@ -115,11 +115,10 @@
         </tr>
         </thead>
         <tbody>
-<!--        <tr th:each="memo : ${memos}">-->
         <tr th:each="reply : ${replies}">
-            <td th:text="${reply.username}">userA</td>
-            <td th:text="${reply.contents}"><a>memo reply contents</a></td>
-<!--            <td th:text="${memo.username}">userA</td>-->
+            <td th:utext="${reply.username}">userA</td>
+            <td th:utext="${reply.contents}"><a>memo reply contents</a></td>
+
 
             <td th:if = "${loginUser.equals(reply.username)}"><button
                     th:onclick="|location.href ='@{/reply/{memoid}/{replyid}/edit(memoid=${memo.id}, replyid=${reply.id})}'|"
@@ -152,6 +151,7 @@
             <div class="col">
 
                 <button class="w-100 btn btn-primary btn-lg" type="submit">Add Reply</button>
+                <span th:if="${HasError}" th:utext="${ErrorMessage}"></span>
 
             </div>
 

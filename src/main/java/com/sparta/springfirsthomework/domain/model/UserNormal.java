@@ -42,7 +42,7 @@ public class UserNormal {
     @Column(unique = true)
     private Long kakaoId;
 
-    //    @JsonIgnore
+
     @OneToMany(mappedBy = "userNormal", cascade = CascadeType.ALL)
     private List<Memo> memos = new ArrayList<>();
 

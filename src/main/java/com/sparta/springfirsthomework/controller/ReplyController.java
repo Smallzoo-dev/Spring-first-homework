@@ -27,9 +27,17 @@ public class ReplyController {
                            @AuthenticationPrincipal UserDetailsImpl userDetails,
                            RedirectAttributes redirectAttributes) {
 
-        replyService.createReply(contents,
-                userService.findByUsername(userDetails.getUsername()),
-                memoService.findOne(memoid));
+        try {
+            replyService.createReply(contents,
+                    userService.findByUsername(userDetails.getUsername()),
+                    memoService.findOne(memoid));
+        } catch (IllegalArgumentException e) {
+            String eMessage = e.getMessage();
+            redirectAttributes.addAttribute("id", memoid);
+            redirectAttributes.addFlashAttribute("HasError", true);
+            redirectAttributes.addFlashAttribute("ErrorMessage", eMessage);
+            return "redirect:/api/memos/{id}";
+        }
         redirectAttributes.addAttribute("id", memoid);
         return "redirect:/api/memos/{id}";
     }
@@ -54,7 +62,15 @@ public class ReplyController {
                             @AuthenticationPrincipal UserDetailsImpl userDetails,
                             RedirectAttributes redirectAttributes) {
         if (replyService.findOne(replyid).getUserNormal().getId() == userDetails.userNormal.getId()) {
-            replyService.update(replyid, contents);
+            try {
+                replyService.update(replyid, contents);
+            } catch (IllegalArgumentException e) {
+                String eMessage = e.getMessage();
+                redirectAttributes.addAttribute("id", memoid);
+                redirectAttributes.addFlashAttribute("HasError", true);
+                redirectAttributes.addFlashAttribute("ErrorMessage", eMessage);
+                return "redirect:/api/memos/{id}";
+            }
         }
         redirectAttributes.addAttribute("id", memoid);
         return "redirect:/api/memos/{id}";

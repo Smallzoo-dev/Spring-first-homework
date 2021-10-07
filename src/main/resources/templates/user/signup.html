@@ -26,6 +26,8 @@
         <input type="text" name="email" placeholder="E-mail" class="login-input-box">
 
         <button id="login-id-submit">회원 가입</button>
+
+        <div><span th:if="${HasError}" th:text="${ErrorMessage}"></span></div>
     </form>
 </div>
 </body>

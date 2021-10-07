@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,8 +62,10 @@ public class MemoController {
     }
 
     @GetMapping("/newMemo")
-    public String newMemoForm(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public String newMemoForm(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model, RedirectAttributes redirectAttributes) {
         if (userDetails == null) {
+            redirectAttributes.addFlashAttribute("HasError", true);
+            redirectAttributes.addFlashAttribute("ErrorMessage", "로그인이 필요한 서비스 입니다.");
             return "redirect:/user/login";
         } else return "api/newMemoForm";
     }
@@ -73,31 +74,49 @@ public class MemoController {
     public String newMemo(@RequestParam String title,
                           @RequestParam String contents,
                           @AuthenticationPrincipal UserDetailsImpl userDetails,
-                          RedirectAttributes redirectAttributes) {
+                          RedirectAttributes redirectAttributes,
+                          Model model) {
 
         UserNormal userNormal = userService.findByUsername(userDetails.getUsername());
-        Long savedMemoId = memoService.createMemo(title, userNormal, contents);
-        redirectAttributes.addAttribute("id", savedMemoId);
+        Long savedMemoId = null;
+        try {
+            savedMemoId = memoService.createMemo(title, userNormal, contents);
+        } catch (IllegalArgumentException e) {
+            String eMessage = e.getMessage();
+            model.addAttribute("HasError", true);
+            model.addAttribute("ErrorMessage", eMessage);
+            return "api/newMemoForm";
 
+        }
+        redirectAttributes.addAttribute("id", savedMemoId);
         return "redirect:/api/memos/{id}";
     }
 
     @GetMapping("/{memoid}/edit")
     public String editForm(@PathVariable Long memoid,
                            @AuthenticationPrincipal UserDetailsImpl userDetails,
+                           RedirectAttributes redirectAttributes,
                            Model model) {
         Memo findOneMemo = memoService.findOne(memoid);
         if (memoService.findOne(memoid).getUserNormal().getId() == userDetails.userNormal.getId()) {
             MemoRequestDto memoRequestDto = new MemoRequestDto(findOneMemo);
             model.addAttribute("memo", memoRequestDto);
             return "api/editForm";
-        } else return "redirect:/api/memos/{memoid}"; // redirect attribute로 알람 띄우기
+        } else return "redirect:/api/memos/{memoid}";
     }
 
     @PostMapping("/{memoid}/edit")
-    public String edit(@PathVariable Long memoid, @ModelAttribute Memo memo) {
+    public String edit(@PathVariable Long memoid, @ModelAttribute Memo memo, Model model, RedirectAttributes redirectAttributes) {
         MemoRequestDto memoRequestDto = new MemoRequestDto(memo);
-        memoService.update(memoid, memoRequestDto);
+        try {
+            memoService.update(memoid, memoRequestDto);
+        } catch (IllegalArgumentException e) {
+            String eMessage = e.getMessage();
+            redirectAttributes.addAttribute("id", memoid);
+            redirectAttributes.addFlashAttribute("HasError", true);
+            redirectAttributes.addFlashAttribute("ErrorMessage", eMessage);
+            return "redirect:/api/memos/{memoid}";
+        }
         return "redirect:/api/memos/{memoid}";
     }
 

@@ -18,6 +18,7 @@ public class MemoService {
 
     @Transactional
     public Long createMemo(String title, UserNormal userNormal, String contents) {
+        validateMemo(contents, title);
         Memo memo = new Memo(title, userNormal, contents);
         memoRepository.save(memo);
         return memo.getId();
@@ -26,12 +27,15 @@ public class MemoService {
 
     @Transactional
     public Long update(Long id, MemoRequestDto requestDto) {
+        validateMemo(requestDto.getContents(), requestDto.getTitle());
+
         Memo memo = memoRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("id값이 존재하지 않습니다.")
         );
         memo.update(requestDto);
         return memo.getId();
     }
+
 
     public List<Memo> findAllMemoWeek(LocalDateTime before, LocalDateTime current) {
         return memoRepository.findAllByModifiedAtBetweenOrderByModifiedAtDesc(before, current);
@@ -43,5 +47,11 @@ public class MemoService {
 
     public void deleteById(Long id) {
         memoRepository.deleteById(id);
+    }
+
+    private void validateMemo(String contents, String title) {
+        if (contents == "" || title == "") {
+            throw new IllegalArgumentException("제목, 내용을 빠짐없이 입력해 주세요.");
+        }
     }
 }

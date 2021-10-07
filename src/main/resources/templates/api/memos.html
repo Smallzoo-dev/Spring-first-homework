@@ -35,9 +35,9 @@
             <tbody>
             <tr th:each="memo : ${memos}">
 
-                <td><a href="memo.html" th:href="@{/api/memos/{id}(id=${memo.id})}" th:text="${memo.id}">1</a></td>
-                <td><a href="memo.html" th:href="@{/api/memos/{id}(id=${memo.id})}" th:text="${memo.title}">Memo1</a></td>
-                <td th:text="${memo.username}">userA</td>
+                <td><a href="memo.html" th:href="@{/api/memos/{id}(id=${memo.id})}" th:utext="${memo.id}">1</a></td>
+                <td><a href="memo.html" th:href="@{/api/memos/{id}(id=${memo.id})}" th:utext="${memo.title}">Memo1</a></td>
+                <td th:utext="${memo.username}">userA</td>
             </tr>
 
             </tbody>

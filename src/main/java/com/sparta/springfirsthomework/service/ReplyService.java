@@ -17,6 +17,7 @@ public class ReplyService {
 
     @Transactional
     public Long createReply(String contents, UserNormal userNormal, Memo memo) {
+        isValidateReply(contents);
         Reply reply = new Reply(contents, userNormal, memo);
         replyRepository.save(reply);
         return reply.getId();
@@ -24,6 +25,7 @@ public class ReplyService {
 
     @Transactional
     public Long update(Long id, String contents) {
+        isValidateReply(contents);
         Reply reply = replyRepository.findById(id).get();
         reply.update(contents);
         return reply.getId();
@@ -39,5 +41,11 @@ public class ReplyService {
 
     public Reply findOne(Long id) {
         return replyRepository.findById(id).get();
+    }
+
+    private void isValidateReply(String contents) {
+        if (contents == "") {
+            throw new IllegalArgumentException("내용을 입력해 주세요");
+        }
     }
 }

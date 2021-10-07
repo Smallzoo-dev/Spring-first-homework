@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <meta charset="UTF-8">
     <title>로그인 페이지</title>
 </head>
 <body>
 <div id="login-form">
     <div id="login-title">Log into Select Shop</div>
-    <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=0f73486b8db1ebcff40fe203e7bfa2d3&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">
+    <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=989d2adf11a63cc4d936d7e122474a92&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">
         카카오로 로그인하기
     </button>
     <button id="login-id-btn" onclick="location.href='/user/signup'">
@@ -23,13 +23,15 @@
     <form action="/user/login" method="post">
         <div class="login-id-label">아이디</div>
         <input type="text" name="username" class="login-input-box">
-
         <div class="login-id-label">비밀번호</div>
         <input type="password" name="password" class="login-input-box">
 
         <button id="login-id-submit">로그인</button>
     </form>
-    <div id="login-failed" style="display:none" class="alert alert-danger" role="alert">로그인에 실패하였습니다.</div>
+    <div id="login-failed" style="display:none" class="alert alert-danger"
+         role="alert">로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요</div>
+
+
 </div>
 </body>
 <script>
